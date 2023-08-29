@@ -1,0 +1,108 @@
+package co.com.bancolombia.config;
+
+import co.com.bancolombia.common.interfaces.TpcClientGeneric;
+import co.com.bancolombia.common.secretsmodel.gateways.SecretsManagerConsumer;
+import co.com.bancolombia.commons.secretsmanager.exceptions.SecretException;
+import co.com.bancolombia.commonsvnt.model.commons.secretsmodel.OnPremiseCredential;
+import co.com.bancolombia.commonsvnt.model.commons.secretsmodel.SecretModelApiKeyInt;
+import co.com.bancolombia.commonsvnt.model.commons.secretsmodel.SecretModelApiOnPremise;
+import co.com.bancolombia.secrets.SecretsManager;
+import io.netty.channel.ChannelOption;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import reactor.netty.tcp.TcpClient;
+
+import javax.net.ssl.SSLException;
+import java.util.concurrent.TimeUnit;
+
+import static co.com.bancolombia.commonsvnt.usecase.util.constants.Constants.CONNECT_TIMEOUT_MILLIS_VALUE;
+import static co.com.bancolombia.commonsvnt.usecase.util.constants.Constants.READ_TIMEOUT_HANDLER;
+import static co.com.bancolombia.commonsvnt.usecase.util.constants.Constants.WRITE_TIMEOUT_HANDLER;
+
+@Configuration
+public class ApiConfig {
+
+    @Value("${apionpremise.secret.region}")
+    private String secretRegionOnPremise;
+
+    @Value("${apionpremise.secret.name}")
+    private String secretNameOnPremise;
+
+    @Value("${apikeyint.secret.region}")
+    private String secretRegionApiKey;
+
+    @Value("${apikeyint.secret.name}")
+    private String secretNameApiKey;
+
+    @Bean
+    @Profile({"dev", "qa", "pdn"})
+    public OnPremiseCredential getCredentialApiOnPremise(SecretsManagerConsumer<SecretModelApiOnPremise> consumer)
+            throws SecretException {
+
+        SecretsManager secretsManager = new SecretsManager();
+        SecretModelApiOnPremise model = (SecretModelApiOnPremise) secretsManager.getSecrets(SecretModelApiOnPremise.class,
+                this.secretRegionOnPremise, this.secretNameOnPremise);
+
+        return OnPremiseCredential.builder().clientId(model.getClientid()).clientSecret(model.getClientsecret())
+                .build();
+    }
+
+    @Bean
+    @Profile({"dev-local", "test"})
+    public OnPremiseCredential getCredentialApiOnPremiseTest() {
+        return OnPremiseCredential.builder()
+                .clientId(secretRegionOnPremise)
+                .clientSecret(secretNameOnPremise)
+                .build();
+    }
+
+    @Bean
+    @Profile({"dev", "qa", "pdn"})
+    public SecretModelApiKeyInt getCredentialApiKeyInt(
+            SecretsManagerConsumer<SecretModelApiKeyInt> consumer) throws SecretException {
+        SecretsManager secretsManager = new SecretsManager();
+        return (SecretModelApiKeyInt) secretsManager.getSecrets(SecretModelApiKeyInt.class,
+                this.secretRegionApiKey, this.secretNameApiKey);
+    }
+
+    @Bean
+    @Profile({"dev-local", "test"})
+    public SecretModelApiKeyInt getCredentialApiKeyIntTest() {
+        return SecretModelApiKeyInt.builder().apiKeyInt(this.secretNameApiKey).build();
+    }
+
+    @Bean
+    @Profile({"dev", "qa", "pdn"})
+    public TpcClientGeneric getTcpClient() {
+        TcpClient client = TcpClient.newConnection()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_MILLIS_VALUE)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .doOnConnected(connection -> {
+                    connection.addHandlerLast(new ReadTimeoutHandler(READ_TIMEOUT_HANDLER, TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(WRITE_TIMEOUT_HANDLER, TimeUnit.MILLISECONDS));
+                });
+        return TpcClientGeneric.builder().client(client).build();
+    }
+
+    @Bean
+    @Profile({"dev-local", "test"})
+    public TpcClientGeneric getTcpClientTest() throws SSLException {
+        SslContext sslContext = SslContextBuilder.forClient()
+                .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+        TcpClient client = TcpClient.newConnection().secure(sslContextSpec -> sslContextSpec.sslContext(sslContext))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_MILLIS_VALUE)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .doOnConnected(connection -> {
+                    connection.addHandlerLast(new ReadTimeoutHandler(READ_TIMEOUT_HANDLER, TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(WRITE_TIMEOUT_HANDLER, TimeUnit.MILLISECONDS));
+                });
+        return TpcClientGeneric.builder().client(client).build();
+    }
+}

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Bancololombia - Gerencia Desarrollo Servicios de Integracion - 23/11/2017 - Generado por: dbedoya  -->
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="unqualified" targetNamespace="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0"
+	xmlns:tns="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:bons0="http://grupobancolombia.com/ents/common/GenericException/V2.0">
+
+	<!-- Inicio Importaciones -->
+	<xs:import schemaLocation="common-core-GenericException-V2.xsd"
+		namespace="http://grupobancolombia.com/ents/common/GenericException/V2.0">
+	</xs:import>
+	<!-- Fin Importaciones -->
+	
+	<!--Inicio Operaciones)-->
+	<xs:element name="transmitirDocumento" type="tns:TransmitirDocumento">
+	</xs:element>
+
+	<xs:element name="transmitirDocumentoResponse" type="tns:TransmitirDocumentoResponse">
+	</xs:element>
+	
+	<xs:element name="actualizarMetaDataDocumento" type="tns:ActualizarMetaDataDocumento">
+	</xs:element>
+
+	<xs:element name="actualizarMetaDataDocumentoResponse" type="tns:ActualizarMetaDataDocumentoResponse">
+	</xs:element>
+	
+	<!--Fin Operaciones)-->
+
+	<!-- Inicio Excepciones -->
+	<xs:element name="systemException" type="tns:SystemException">
+	</xs:element>
+	
+	<!-- Fin Excepciones -->
+	
+	<!-- Inicio tipos complejos -->
+	
+	<!--Inicio Tipos Complejos Operaciones-->
+	<xs:complexType name="TransmitirDocumento">
+		<xs:sequence>
+			<xs:element name="tipoDocumental" minOccurs="1"
+				maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="autor" minOccurs="1" maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="grupoSeguridad" minOccurs="1"
+				maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="cuentaSeguridad" minOccurs="1"
+				maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="80"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subTipoDocumental" minOccurs="1"
+				maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="200"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="tipoDocumentoIdentificacion" minOccurs="0"
+				maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="numeroDocumentoIdentificacion"
+				minOccurs="0" maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="codigoSubSerie" minOccurs="1"
+				maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="idPerfil" minOccurs="1" maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="nombreArchivo" minOccurs="1"
+				maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="archivo" type="xs:base64Binary"
+				minOccurs="1" maxOccurs="1">
+			</xs:element>
+			<xs:element name="metaData" type="tns:MetaData" minOccurs="0" maxOccurs="1"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="TransmitirDocumentoResponse">
+		<xs:sequence>
+			<xs:element name="idDocumento" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ActualizarMetaDataDocumento">
+		<xs:sequence>
+			<xs:element name="idDocumento" type="xs:string"
+				minOccurs="1" maxOccurs="1">
+			</xs:element>
+			<xs:element name="autor" minOccurs="0" maxOccurs="1">
+
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="metaData" type="tns:MetaData" minOccurs="0" maxOccurs="1"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ActualizarMetaDataDocumentoResponse">
+		<xs:sequence>
+			<xs:element name="idDocumento" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!--Fin Tipos Complejos Operaciones-->
+
+
+	<!--Inicio Tipos Complejos Excepciones-->
+	<xs:complexType name="SystemException">
+		<xs:sequence>
+			<xs:element name="genericException" type="bons0:GenericException">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!--Fin Tipos Complejos Excepciones-->
+	
+	<!-- Inicio tipos complejos -->
+	<xs:complexType name="MetaData">
+		<xs:sequence>
+			<xs:element name="tiposMetaData" type="tns:TiposMetaData" minOccurs="1" maxOccurs="unbounded"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+    <xs:complexType name="TiposMetaData">
+    	<xs:sequence>
+    		<xs:element name="nombre" minOccurs="1" maxOccurs="1">
+    			<xs:simpleType>
+    				<xs:restriction base="xs:string">
+    					<xs:maxLength value="30"></xs:maxLength>
+    				</xs:restriction>
+    			</xs:simpleType>
+    		</xs:element>
+    		<xs:element name="valor" minOccurs="1" maxOccurs="1">
+
+    			<xs:simpleType>
+    				<xs:restriction base="xs:string">
+    					<xs:maxLength value="2000"></xs:maxLength>
+    				</xs:restriction>
+    			</xs:simpleType>
+    		</xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

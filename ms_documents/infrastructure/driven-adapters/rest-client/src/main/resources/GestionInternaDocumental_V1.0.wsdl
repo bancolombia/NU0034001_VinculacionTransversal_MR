@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Bancololombia - Gerencia Desarrollo Servicios de Integracion - 23/11/2017 - Generado por: dbedoya  -->
+<wsdl:definitions name="GestionInternaDocumental"
+                  targetNamespace="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/Enlace/V1.0"
+                  xmlns:tns="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/Enlace/V1.0"
+                  xmlns:ns="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+	<wsdl:import location="GestionInternaDocumental_Intf_V1.0.wsdl"
+		namespace="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0">
+	</wsdl:import>
+
+	<wsdl:binding name="GestionInternaDocumentalHttpBinding" type="ns:GestionInternaDocumental">
+
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+
+		<wsdl:operation name="transmitirDocumento">
+
+			<soap:operation
+				soapAction="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0/transmitirDocumento" />
+
+			<wsdl:input name="transmitirDocumentoRequest">
+			
+				<soap:body parts="parameters" use="literal" />
+			
+				<soap:header message="ns:transmitirDocumentoRequestMsg" part="requestHeader" use="literal" />
+			
+			</wsdl:input>
+
+			<wsdl:output name="transmitirDocumentoResponse">
+			
+				<soap:body parts="result" use="literal" />
+			
+				<soap:header message="ns:transmitirDocumentoResponseMsg" part="responseHeader" use="literal" />
+			
+			</wsdl:output>
+
+			<wsdl:fault name="systemException">
+				<soap:fault name="systemException" use="literal" />
+			</wsdl:fault>
+
+
+		</wsdl:operation>
+		<wsdl:operation name="actualizarMetaDataDocumento">
+
+			<soap:operation
+				soapAction="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0/actualizarMetaDataDocumento" />
+
+			<wsdl:input name="actualizarMetaDataDocumentoRequest">
+			
+				<soap:body parts="parameters" use="literal" />
+			
+				<soap:header message="ns:actualizarMetaDataDocumentoRequestMsg" part="requestHeader" use="literal" />
+			
+			</wsdl:input>
+
+			<wsdl:output name="actualizarMetaDataDocumentoResponse">
+			
+				<soap:body parts="result" use="literal" />
+			
+				<soap:header message="ns:actualizarMetaDataDocumentoResponseMsg" part="responseHeader" use="literal" />
+			
+			</wsdl:output>
+
+			<wsdl:fault name="systemException">
+				<soap:fault name="systemException" use="literal" />
+			</wsdl:fault>
+
+
+		</wsdl:operation>
+
+
+
+	</wsdl:binding>
+
+	<wsdl:service name="GestionInternaDocumental">
+		<wsdl:port binding="tns:GestionInternaDocumentalHttpBinding" name="GestionInternaDocumentalHttpPort">
+			<soap:address
+				location="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/Enlace/V1.0" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

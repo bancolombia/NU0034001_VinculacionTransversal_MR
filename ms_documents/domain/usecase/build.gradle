@@ -1,0 +1,27 @@
+dependencies {
+    implementation project(':model')
+
+    implementation group: 'co.com.bancolombia', name: 'secretsmanager', version: '2.2.1'
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.968')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation group: 'software.amazon.awssdk', name: 'sqs', version: '2.16.52'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws-messaging', version: '2.2.6.RELEASE'
+
+    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+
+    implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '3.0.0-RC1'
+
+    // https://mvnrepository.com/artifact/org.apache.pdfbox/preflight
+    implementation group: 'org.apache.pdfbox', name: 'preflight', version: '2.0.23'
+
+
+
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation group: 'commons-io', name: 'commons-io', version: '2.10.0'
+
+    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13'
+    implementation group: 'com.itextpdf', name: 'itext-pdfa', version: '5.5.13'
+}

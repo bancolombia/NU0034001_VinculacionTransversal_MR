@@ -1,0 +1,17 @@
+rootProject.name = 'reputationidentity'
+
+include ":app-service"
+include ":model"
+include ":usecase"
+project(':app-service').projectDir = file('./applications/app-service')
+project(':model').projectDir = file('./domain/model')
+project(':usecase').projectDir = file('./domain/usecase')
+include ":api-rest"
+project(':api-rest').projectDir = file('./infrastructure/entry-points/api-rest')
+include ":dynamo-repository"
+project(':dynamo-repository').projectDir = file('./infrastructure/driven-adapters/dynamo-repository')
+
+include ":secrets-manager"
+project(':secrets-manager').projectDir = file('./infrastructure/driven-adapters/secrets-manager-consumer')
+include ':rest-client'
+project(':rest-client').projectDir = file('./infrastructure/driven-adapters/rest-client')

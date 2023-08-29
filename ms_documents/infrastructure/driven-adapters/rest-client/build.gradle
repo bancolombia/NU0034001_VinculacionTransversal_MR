@@ -1,0 +1,38 @@
+configurations {
+    compile
+    runtime
+    axisGenAntTask
+}
+
+dependencies {
+    implementation project(':model')
+    implementation project(':usecase')
+    implementation project(':api-rest')
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+    implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.8'
+
+    implementation group: 'javax.xml', name: 'jaxb-api', version: '2.1'
+
+    compile('org.apache.axis2:axis2-adb:1.7.9') //may need to exclude woden
+    compile 'org.apache.axis2:axis2-transport-local:1.7.9',
+            'org.apache.axis2:axis2-transport-http:1.7.9'
+    axisGenAntTask 'org.apache.axis2:axis2-ant-plugin:1.7.9'
+}
+
+task genWsdlClasses {
+    ant.echo(message: 'Generating Classes for use with WSDL')
+    ant.taskdef(
+            name: 'genClassesFromWSDL',
+            classname: 'org.apache.axis2.tool.ant.AntCodegenTask',
+            classpath: configurations.axisGenAntTask.asPath
+    )
+    ant.genClassesFromWSDL(
+            wsdlfilename: "${projectDir}/src/main/resources/GestionInternaDocumental_V1.0.wsdl",
+            allPorts: true,
+            overWrite: true,
+            targetSourceFolderLocation: "src/main/java",
+            unpackClasses: true,
+            output: "${projectDir}"
+    )
+}

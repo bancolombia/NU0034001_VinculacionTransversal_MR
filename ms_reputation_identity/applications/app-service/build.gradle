@@ -1,0 +1,50 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation project(':api-rest')
+    implementation project(':model')
+    implementation project(':usecase')
+    implementation project(':secrets-manager')
+    implementation project(':dynamo-repository')
+    implementation project(':rest-client')
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation group: 'co.com.bancolombia', name: 'secretsmanager', version: '2.2.1'
+    implementation 'com.amazonaws:aws-java-sdk-core:1.12.38'
+
+    implementation group: 'software.amazon.awssdk', name: 'auth', version: '2.13.10'
+
+    implementation group: 'com.github.derjust', name: 'spring-data-dynamodb', version: '5.0.4'
+
+    implementation 'com.amazonaws:aws-java-sdk-sts:1.11.792'
+
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+
+
+
+
+}
+
+task explodedJar(type: Copy) {
+    with jar
+    into "${buildDir}/exploded"
+}
+
+configurations{
+    compile.exclude group: "org.springframework.boot", module:"spring-boot-starter-tomcat"
+}
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
+    }
+}

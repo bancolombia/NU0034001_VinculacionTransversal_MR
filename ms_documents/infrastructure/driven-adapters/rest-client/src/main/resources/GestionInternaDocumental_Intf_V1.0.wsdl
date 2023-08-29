@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Bancololombia - Gerencia Desarrollo Servicios de Integracion - 23/11/2017 - Generado por: dbedoya  -->
+<wsdl:definitions name="GestionInternaDocumental"
+                  targetNamespace="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0"
+                  xmlns:tns="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:mf="http://grupobancolombia.com/ents/SOI/MessageFormat/V2.1">
+	
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0">
+			<xsd:include schemaLocation="GestionInternaDocumental_V1.0.xsd" />
+
+			<xsd:import schemaLocation="soi-core-MessageFormat-V2.1.xsd"
+				namespace="http://grupobancolombia.com/ents/SOI/MessageFormat/V2.1" />
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="transmitirDocumentoRequestMsg">
+		<wsdl:part element="tns:transmitirDocumento" name="parameters" />
+		<wsdl:part element="mf:requestHeader" name="requestHeader" />
+	</wsdl:message>
+
+	<wsdl:message name="transmitirDocumentoResponseMsg">
+		<wsdl:part element="tns:transmitirDocumentoResponse" name="result" />
+		<wsdl:part element="mf:responseHeader" name="responseHeader" />
+	</wsdl:message>
+	<wsdl:message name="actualizarMetaDataDocumentoRequestMsg">
+		<wsdl:part element="tns:actualizarMetaDataDocumento" name="parameters" />
+		<wsdl:part element="mf:requestHeader" name="requestHeader" />
+	</wsdl:message>
+
+	<wsdl:message name="actualizarMetaDataDocumentoResponseMsg">
+		<wsdl:part element="tns:actualizarMetaDataDocumentoResponse" name="result" />
+		<wsdl:part element="mf:responseHeader" name="responseHeader" />
+	</wsdl:message>
+	
+	<wsdl:message name="systemExceptionMsg">
+		<wsdl:part element="tns:systemException" name="parameters" />
+	</wsdl:message>
+
+
+
+	<wsdl:portType name="GestionInternaDocumental">
+
+
+		<!--por cada operación)-->
+		<wsdl:operation name="transmitirDocumento">
+		
+			<wsdl:input name="transmitirDocumentoRequest"
+				message="tns:transmitirDocumentoRequestMsg" />
+		
+			<wsdl:output name="transmitirDocumentoResponse"
+				message="tns:transmitirDocumentoResponseMsg" />
+			
+			<wsdl:fault name="systemException" message="tns:systemExceptionMsg" />
+				
+		</wsdl:operation>
+		
+		<wsdl:operation name="actualizarMetaDataDocumento">
+		
+			<wsdl:input name="actualizarMetaDataDocumentoRequest"
+				message="tns:actualizarMetaDataDocumentoRequestMsg" />
+		
+			<wsdl:output name="actualizarMetaDataDocumentoResponse"
+				message="tns:actualizarMetaDataDocumentoResponseMsg" />
+			
+			<wsdl:fault name="systemException" message="tns:systemExceptionMsg" />
+				
+		</wsdl:operation>
+		
+		<!--por cada operación)-->
+
+	</wsdl:portType>
+
+
+</wsdl:definitions>

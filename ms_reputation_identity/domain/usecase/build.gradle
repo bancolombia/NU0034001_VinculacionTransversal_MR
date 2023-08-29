@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':model')
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    implementation group: 'co.com.bancolombia', name: 'secretsmanager', version: '2.2.1'
+}

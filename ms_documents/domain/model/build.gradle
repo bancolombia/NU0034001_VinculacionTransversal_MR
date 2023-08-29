@@ -1,0 +1,7 @@
+dependencies {
+    implementation group: 'co.com.bancolombia', name: 'secretsmanager', version: '2.2.1'
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+
+    implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '3.0.0-RC1'
+    implementation group: 'org.apache.pdfbox', name: 'preflight', version: '2.0.23'
+}

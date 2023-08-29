@@ -1,0 +1,144 @@
+##Spring Configuration
+server:
+  port: 8080
+
+spring:
+  application:
+    name: legal-person
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 20
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+    jpa:
+      #properties:
+      #hibernate:
+      #dialect: "com.test.CustomPostgreSQLDialect"
+      hibernate:
+        ddl-auto: none # When you launch the application for the first time - switch "none" at "create"
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      show-sql: false
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      open-in-view: false
+      generate-ddl: false
+
+  http:
+    auth-token-header-name: apiKey
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force-response: true
+
+apikeyint:
+  secret:
+    region: us-east-1
+    name: #{secret-name-apikey-int}#
+
+cloud:
+  aws:
+    region:
+      ##static: us-east-2   # Region where you have created the queue. In this example, we have created the queue in 'ap-south-1' region.
+      static: us-east-1
+      auto: true
+    stack:
+      auto: false
+
+---
+
+spring:
+
+  profiles: dev-local
+
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: DEBUG
+
+server:
+  port: 8093
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schlpvnt
+      name: #{secret}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+
+apionpremise:
+  secret:
+    region:
+    name:
+
+rabbit:
+  host: localhost
+  port: 5672
+  secret:
+    region:
+    name:
+
+
+---
+spring:
+
+  profiles: dev
+
+  # Primary data source configuration
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: INFO
+    hikari:
+      maximum-pool-size: 5
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schlpvnt
+      name: #{secret}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+

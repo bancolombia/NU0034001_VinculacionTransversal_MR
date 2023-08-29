@@ -1,0 +1,313 @@
+##Spring Configuration
+server:
+  port: 8080
+
+spring:
+
+  application:
+    name: documents
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    sqlScriptEncoding: UTF-8
+
+    hikari:
+      maximum-pool-size: 20
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+    jpa:
+      #properties:
+      #hibernate:
+      #dialect: "com.test.CustomPostgreSQLDialect"
+      hibernate:
+        ddl-auto: none # When you launch the application for the first time - switch "none" at "create"
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      show-sql: false
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      open-in-view: false
+      generate-ddl: false
+
+  http:
+    auth-token-header-name: apiKey
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force-response: true
+
+sign:
+  rest:
+    clientId: #{sign-clientId}#
+    clientSecret: #{sign-clientSecret}#
+
+cloud:
+  aws:
+    region:
+      ##static: us-east-2   # Region where you have created the queue. In this example, we have created the queue in 'ap-south-1' region.
+      static: us-east-1
+      auto: true
+    stack:
+      auto: false
+
+---
+spring:
+
+  profiles: dev-local
+
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: DEBUG
+
+server:
+  port: 8095
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schdnvnt
+      name: #{secret}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+
+apionpremise:
+  secret:
+    region:
+    name:
+
+rabbit:
+  host: localhost
+  port: 5672
+  secret:
+    region:
+    name:
+
+apikeyint:
+  secret:
+    region: us-east-1
+    name: #{secret-name-apikey-int}#
+
+baseUrlDataPower:
+  onPremise: https://172.25.193.132:59098/int/development
+
+signDocument:
+  baseUrl:
+    onPremise: https://172.25.193.133:58012/int/testing
+  rest:
+    userName: sysadmin
+  subtypeCode: 1507
+
+baseUrlSOAP:
+  TDC: https://10.8.74.101:8443/GestionDocumental/GestionInternaDocumental
+
+aws:
+  s3:
+    bucketName: nu0034001-vinculacion-transversal-dev-ou-s3
+    folderName: nu0034001
+  sqs:
+    waitTimeOut: 5
+    maxNumberOfMessages: 10
+    queueName: nu0034001-vinculacion-transversal-dev-queue-ou
+    queueUrl: https://sqs.us-east-1.amazonaws.com/305934492809/nu0034001-vinculacion-transversal-dev-queue-ou
+    rolArn:
+  sqsPersistence:
+    waitTimeOut: 5
+    queueUrl: https://sqs.us-east-1.amazonaws.com/305934492809/nu0034001-vinculacion-transversal-dev-queue-ou
+    rolArn:
+
+baseUrlMicro:
+  documents: http://localhost:8095/documents/api/v1/
+  apikey:
+
+---
+spring:
+
+  profiles: dev
+
+  # Primary data source configuration
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: INFO
+    hikari:
+      maximum-pool-size: 5
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schdnvnt
+      name: #{secret}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+
+apionpremise:
+  secret:
+    region: us-east-1
+    name: #{secret-name-onpremise}#
+
+rabbit:
+  host: b-40ed2074-7e7a-48e7-99e1-73ab9d51b773.mq.us-east-1.amazonaws.com
+  port: 5671
+  secret:
+    region: us-east-1
+    name: #{secret-name-rabbit}#
+
+apikeyint:
+  secret:
+    region: us-east-1
+    name: #{secret-name-apikey-int}#
+
+baseUrlDataPower:
+  onPremise: https://dpdev.apps.ambientesbc.com:59098/int/development
+
+signDocument:
+  baseUrl:
+    onPremise: https://dpqa.apps.ambientesbc.com:58012/int/testing
+  rest:
+    userName: #{sign-userName}#
+  subtypeCode: #{sign-subtypeCode}#
+
+baseUrlSOAP:
+  TDC: https://stagingwcc.ambientesbc.lab:8443/GestionDocumental/GestionInternaDocumental
+
+aws:
+  s3:
+    bucketName: nu0034001-vinculacion-transversal-dev-ou-s3
+    folderName: nu0034001
+  sqs:
+    waitTimeOut: #{wait-time-out}#
+    maxNumberOfMessages: #{max-number-of-messages}#
+    queueName: nu0034001-vinculacion-transversal-dev-queue-ou-documents-upload
+    queueUrl: https://sqs.us-east-1.amazonaws.com/305934492809/nu0034001-vinculacion-transversal-dev-queue-ou-documents-upload
+    rolArn: arn:aws:iam::305934492809:role/eksrole-vinculacion-transversal-ou
+  sqsPersistence:
+    queueUrl: https://sqs.us-east-1.amazonaws.com/305934492809/nu0034001-vinculacion-transversal-dev-queue-ou-documents-persistence
+    rolArn: arn:aws:iam::305934492809:role/eksrole-vinculacion-transversal-ou
+
+baseUrlMicro:
+  documents: http://api.vinculacion-transversal-dev.svc.cluster.local/documents/api/v1/
+  apikey:
+---
+spring:
+
+  profiles: qa
+
+  # Primary data source configuration
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: INFO
+    hikari:
+      maximum-pool-size: 5
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schdnvnt
+      name: #{secret-qa}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+
+apionpremise:
+  secret:
+    region: us-east-1
+    name: #{secret-name-onpremise-qa}#
+
+rabbit:
+  host: b-0d8d1678-f561-47b6-bcfd-39224c9ada26.mq.us-east-1.amazonaws.com
+  port: 5671
+  secret:
+    region: us-east-1
+    name: #{secret-name-rabbit-qa}#
+
+apikeyint:
+  secret:
+    region: us-east-1
+    name: #{secret-name-apikey-int-qa}#
+
+baseUrlDataPower:
+  onPremise: https://dpqa.apps.ambientesbc.com:59098/int/testing
+
+signDocument:
+  baseUrl:
+    onPremise: https://dpqa.apps.ambientesbc.com:58012/int/testing
+  rest:
+    userName: #{sign-userName-qa}#
+  subtypeCode: #{sign-subtypeCode-qa}#
+
+baseUrlSOAP:
+  TDC: https://stagingwcc.ambientesbc.lab:8443/GestionDocumental/GestionInternaDocumental
+
+aws:
+  s3:
+    bucketName: nu0034001-vinculacion-transversal-qa-ou-s3
+    folderName: nu0034001
+  sqs:
+    waitTimeOut: #{wait-time-out}#
+    maxNumberOfMessages: #{max-number-of-messages}#
+    queueName: nu0034001-vinculacion-transversal-qa-queue-ou-documents-upload
+    queueUrl: https://sqs.us-east-1.amazonaws.com/203385754180/nu0034001-vinculacion-transversal-qa-queue-ou-documents-upload
+    rolArn: arn:aws:iam::203385754180:role/eksrole-vinculacion-transversal-ou
+  sqsPersistence:
+    queueUrl: https://sqs.us-east-1.amazonaws.com/203385754180/nu0034001-vinculacion-transversal-qa-queue-ou-documents-persistence
+    rolArn: arn:aws:iam::203385754180:role/eksrole-vinculacion-transversal-ou
+
+baseUrlMicro:
+  documents: http://api.vinculacion-transversal-qa.svc.cluster.local/documents/api/v1/
+  apikey:

@@ -1,0 +1,87 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.1.RELEASE'
+        springCloudVersion = 'Greenwich.M1'
+        mapstructVersion = '1.4.2.Final'
+        lombokVersion = '1.18.20'
+        mapstructVersion = '1.4.2.Final'
+        reactorVersion = '3.3.20.RELEASE'
+        reactorAddonsVersion = '3.4.4'
+
+    }
+    repositories {
+        maven{url 'https://artifactory.apps.bancolombia.com/maven-bancolombia' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id "co.com.bancolombia.cleanArchitecture" version "1.9.4"
+    id 'java-gradle-plugin'
+    id "org.sonarqube" version "3.0"
+}
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+    }
+}
+
+apply from: './main.gradle'
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    repositories {
+        maven { url 'https://artifactory.apps.bancolombia.com/maven-bancolombia' }
+    }
+    jacoco {
+        toolVersion = '0.8.5'
+    }
+    ext['log4j2.version'] = '2.16.0'
+}
+
+subprojects {
+    jacocoTestReport {
+        reports {
+            html.enabled = true
+            xml.enabled = true
+        }
+    }
+    test {
+        finalizedBy jacocoTestReport
+        jacoco {
+            destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+            classDumpDir = file("$buildDir/jacoco/classpathdumps")
+        }
+    }
+}
+
+task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport){
+    dependsOn = subprojects.test
+    additionalSourceDirs.from = subprojects.sourceSets.main.allSource.srcDirs
+    sourceDirectories.from = subprojects.sourceSets.main.allSource.srcDirs
+    classDirectories.from = subprojects.sourceSets.main.output
+    executionData.from = subprojects.jacocoTestReport.executionData
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+    onlyIf = {
+        true
+    }
+    doFirst {
+        executionData.from = executionData.findAll {
+            it.exists()
+        }
+    }
+}
+
+task coverage {
+    dependsOn 'test'
+    dependsOn 'jacocoTestReport'
+    tasks.findByName('jacocoTestReport')
+}

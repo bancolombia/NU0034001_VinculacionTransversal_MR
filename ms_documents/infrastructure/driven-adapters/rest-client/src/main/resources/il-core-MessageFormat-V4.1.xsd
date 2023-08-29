@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema elementFormDefault="unqualified"
+	targetNamespace="http://grupobancolombia.com/ents/IL/MessageFormat/V4.1"
+	xmlns:tns="http://grupobancolombia.com/ents/IL/MessageFormat/V4.1"
+	version="1.0"
+	xmlns:bons1="http://grupobancolombia.com/ents/IL/CoreExtensions/V3.1"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:import
+		namespace="http://grupobancolombia.com/ents/IL/CoreExtensions/V3.1"
+		schemaLocation="il-core-CoreExtension-V3.1.xsd">
+	</xsd:import>
+	<xsd:complexType name="Header">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" name="systemId"
+				type="xsd:string" />
+			<xsd:element minOccurs="1" name="messageId"
+				type="xsd:string" />
+
+			<xsd:element minOccurs="1" name="interactionData"
+				type="tns:InteractionData" />
+			<xsd:element name="requestData" type="tns:RequestData"
+				minOccurs="1" />
+			<xsd:element name="responseData" type="tns:ResponseData"
+				minOccurs="0" />
+			<xsd:element minOccurs="0" name="routingStack"
+				type="tns:RoutingStack" />
+			<xsd:element minOccurs="0" name="messageContext"
+				type="bons1:MessageContext" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestData">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" name="userId"
+				type="bons1:UsernameToken" />
+			<xsd:element minOccurs="1" name="destination"
+				type="bons1:Destination" />
+			<xsd:element maxOccurs="1" minOccurs="0"
+				name="classifications" type="bons1:Classifications" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseData">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" name="providerData"
+				type="tns:ProviderData" />
+			<xsd:element maxOccurs="1" minOccurs="1" name="status"
+				type="bons1:ResponseStatus" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ProviderData">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="systemId"
+				type="xsd:string" />
+			<xsd:element minOccurs="0" name="messageId"
+				type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InteractionData">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="senderSystemId"
+				type="xsd:string" />
+			<xsd:element minOccurs="0" name="receiverSystemId"
+				type="xsd:string" />
+			<xsd:element minOccurs="1" name="timestamp"
+				type="xsd:dateTime" />
+			<xsd:element minOccurs="0" name="externalDestination"
+				type="xsd:anyURI" />
+			<xsd:element minOccurs="0" name="externalMsgId"
+				type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RoutingStack">
+		<xsd:sequence>
+			<xsd:element name="route" type="tns:Route" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Route">
+		<xsd:sequence>
+			<xsd:element name="ReplyTo" type="tns:EndpointReference"
+				minOccurs="1" maxOccurs="1" />
+			<xsd:element name="FaultTo" type="tns:EndpointReference"
+				minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EndpointReference">
+		<xsd:sequence>
+			<xsd:element name="address" type="xsd:anyURI" />
+			<xsd:element minOccurs="0" name="correlationId"
+				type="xsd:hexBinary">
+			</xsd:element>
+			<xsd:element minOccurs="0" name="messageId"
+				type="xsd:hexBinary">
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

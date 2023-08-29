@@ -1,0 +1,45 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation project(':api-rest')
+    implementation project(':model')
+    implementation project(':usecase')
+    implementation project(':secrets-manager')
+    implementation project(':jpa-repository')
+    implementation project(':files-repository')
+    implementation project(':rest-client')
+
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-undertow:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+
+    implementation "org.springframework.boot:spring-boot-starter-validation:${springBootVersion}"
+
+    implementation group: 'co.com.bancolombia', name: 'secretsmanager', version: '2.2.1'
+    implementation 'com.amazonaws:aws-java-sdk-core:1.12.38'
+    implementation 'com.amazonaws:aws-java-sdk-sts:1.11.792'
+    implementation group: 'software.amazon.awssdk', name: 'sqs', version: '2.16.52'
+
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws-messaging', version: '2.2.6.RELEASE'
+}
+
+task explodedJar(type: Copy) {
+    with jar
+    into "${buildDir}/exploded"
+}
+
+configurations {
+    compile.exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+}
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
+    }
+}

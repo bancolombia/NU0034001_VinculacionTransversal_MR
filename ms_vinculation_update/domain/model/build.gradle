@@ -1,0 +1,4 @@
+dependencies {
+    implementation group: 'co.com.bancolombia', name: 'secretsmanager', version: '2.2.1'
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+}

@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':model')
+    implementation "org.springframework:spring-context"
+    implementation group: 'co.com.bancolombia', name: 'secretsmanager', version: '2.2.1'
+}

@@ -1,0 +1,283 @@
+##Spring Configuration
+server:
+  port: 8080
+
+spring:
+  application:
+    name: natural-person
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 20
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+    jpa:
+      #properties:
+      #hibernate:
+      #dialect: "com.test.CustomPostgreSQLDialect"
+      hibernate:
+        ddl-auto: none # When you launch the application for the first time - switch "none" at "create"
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      show-sql: false
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      open-in-view: false
+      generate-ddl: false
+
+  http:
+    auth-token-header-name: apiKey
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force-response: true
+
+apikeyint:
+  secret:
+    region: us-east-1
+    name: #{secret-name-apikey-int}#
+
+cloud:
+  aws:
+    region:
+      ##static: us-east-2   # Region where you have created the queue. In this example, we have created the queue in 'ap-south-1' region.
+      static: us-east-1
+      auto: true
+    stack:
+      auto: false
+
+app:
+  async:
+    withDLQRetry: true
+    retryDelay: 5000
+    maxRetries: 3
+
+---
+
+spring:
+
+  profiles: dev-local
+
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: DEBUG
+
+server:
+  port: 8092
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schnpvnt
+      name: #{secret}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+
+apionpremise:
+  secret:
+    region:
+    name:
+
+rabbit:
+  host: localhost
+  port: 5672
+  secret:
+    region:
+    name:
+
+baseUrl:
+  onPremise: https://internal-apigateway-qa.bancolombia.corp/int/testing
+
+---
+spring:
+  profiles: dev
+
+  # Primary data source configuration
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: INFO
+    hikari:
+      maximum-pool-size: 5
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schnpvnt
+      name: #{secret}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+
+apionpremise:
+  secret:
+    region: us-east-1
+    name: #{secret-name-onpremise}#
+
+apikeyint:
+  secret:
+    region: us-east-1
+    name: #{secret-name-apikey-int}#
+
+rabbit:
+  host: b-40ed2074-7e7a-48e7-99e1-73ab9d51b773.mq.us-east-1.amazonaws.com
+  port: 5671
+  secret:
+    region: us-east-1
+    name: #{secret-name-rabbit}#
+
+baseUrl:
+  onPremise: https://internal-apigateway-dev.bancolombia.corp/int/development
+
+---
+spring:
+  profiles: qa
+
+  # Primary data source configuration
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: INFO
+    hikari:
+      maximum-pool-size: 5
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schnpvnt
+      name: #{secret-qa}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+
+apionpremise:
+  secret:
+    region: us-east-1
+    name: #{secret-name-onpremise-qa}#
+
+apikeyint:
+  secret:
+    region: us-east-1
+    name: #{secret-name-apikey-int-qa}#
+
+rabbit:
+  host: b-0d8d1678-f561-47b6-bcfd-39224c9ada26.mq.us-east-1.amazonaws.com
+  port: 5671
+  secret:
+    region: us-east-1
+    name: #{secret-name-rabbit-qa}#
+
+baseUrl:
+  onPremise: https://internal-apigateway-qa.bancolombia.corp/int/testing
+
+---
+
+spring:
+
+  profiles: pdn
+
+  # Primary data source configuration
+  datasource:
+    url: jdbc:postgresql:localhost
+    username:
+    password:
+    logging:
+      level:
+        org.springframework.web: INFO
+
+    hikari:
+      maximum-pool-size: 5
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+db:
+  manangment:
+    secret:
+      region: us-east-1
+      url: jdbc:postgresql://%s:%s/%s?currentSchema=schnpvnt
+      name: #{secret-pdn}#
+    url: jdbc:postgresql://%s:%s/%s?currentSchema=public
+    host:
+    bdname:
+    port:
+    username:
+    password:
+
+apionpremise:
+  secret:
+    region: us-east-1
+    name: #{secret-name-onpremise}#
+
+apikeyint:
+  secret:
+    region: us-east-1
+    name: #{secret-name-apikey-int}#
+
+baseUrl:
+  onPremise: https://internal-apigateway.bancolombia.corp/int/production
+  apikey:

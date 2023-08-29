@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(':model')
+    implementation group: 'co.com.bancolombia', name: 'secretsmanager', version: '2.2.1'
+}

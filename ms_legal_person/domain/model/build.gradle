@@ -1,0 +1,6 @@
+dependencies {
+    implementation 'com.github.bancolombia:aws-secrets-manager-sync:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.3'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+}

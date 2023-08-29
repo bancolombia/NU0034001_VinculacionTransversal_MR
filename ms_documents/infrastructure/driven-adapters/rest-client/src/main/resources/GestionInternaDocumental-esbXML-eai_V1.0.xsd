@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Bancololombia - Gerencia Desarrollo Servicios de Integracion - 23/11/2017 - Generado por: dbedoya  -->
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="unqualified" targetNamespace="http://grupobancolombia.com/intf/EAI/esbXML/V1.0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://grupobancolombia.com/intf/EAI/esbXML/V1.0"
+	xmlns:bons0="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0" xmlns:Q1="http://grupobancolombia.com/ents/EAI/MessageFormat/V2.1">
+
+	<xs:import schemaLocation="eai-core-MessageFormat-V2.1.xsd"
+		namespace="http://grupobancolombia.com/ents/EAI/MessageFormat/V2.1">
+	</xs:import>
+
+	<xs:import schemaLocation="GestionInternaDocumental_V1.0.xsd"
+		namespace="http://grupobancolombia.com/intf/Corporativo/administracionDocumentos/GestionInternaDocumental/V1.0" />
+
+	<xs:element name="esbXML" type="tns:esbXML" />
+
+	<xs:complexType name="esbXML">
+		<xs:sequence>
+			<xs:element name="Header" type="Q1:Header" />
+			<xs:element name="Body" type="tns:Body" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Body">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="1">
+
+				<!--Inicio Operaciones-->
+				<xs:element ref="bons0:transmitirDocumento" />
+				<xs:element ref="bons0:transmitirDocumentoResponse" />
+				
+				<xs:element ref="bons0:actualizarMetaDataDocumento" />
+				<xs:element ref="bons0:actualizarMetaDataDocumentoResponse" />
+				
+				<!--Fin Operaciones-->
+				
+				<!--Inicio Excepciones-->
+				<xs:element ref="bons0:systemException" />
+				<!--Fin Excepciones-->
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

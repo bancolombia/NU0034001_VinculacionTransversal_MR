@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema elementFormDefault="unqualified"
+	targetNamespace="http://grupobancolombia.com/ents/EAI/MessageFormat/V2.1"
+	version="1.0" xmlns:tns="http://grupobancolombia.com/ents/EAI/MessageFormat/V2.1"
+	xmlns:bons1="http://grupobancolombia.com/ents/EAI/CoreExtensions/V2.1"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:import namespace="http://grupobancolombia.com/ents/EAI/CoreExtensions/V2.1"
+		schemaLocation="eai-core-CoreExtension-V2.1.xsd">
+	</xsd:import>
+	<xsd:complexType name="Header">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" name="systemId" type="xsd:string" />
+			<xsd:element minOccurs="1" name="messageId" type="xsd:string" />
+			<xsd:element minOccurs="0" name="timestamp" type="xsd:dateTime" />
+			<xsd:choice>
+				<xsd:element name="requestData" type="tns:RequestData"
+					minOccurs="1" />
+				<xsd:element name="responseData" type="tns:ResponseData"
+					minOccurs="1" />
+			</xsd:choice>
+			<xsd:element minOccurs="0" name="messageContext" type="bons1:MessageContext" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestData">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" name="userId" type="bons1:UsernameToken" />
+			<xsd:element minOccurs="1" name="destination" type="bons1:Destination" />
+			<xsd:element maxOccurs="1" minOccurs="0" name="classifications"
+				type="bons1:Classifications" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseData">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" name="status"
+				type="bons1:ResponseStatus" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

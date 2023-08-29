@@ -1,0 +1,58 @@
+subprojects {
+    apply plugin: "java"
+    apply plugin: "jacoco"
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    repositories {
+        maven{ url 'https://artifactory.apps.bancolombia.com/maven-bancolombia' }
+    }
+
+    dependencies {
+        testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+        testImplementation "org.springframework.boot:spring-boot-maven-plugin:${springBootVersion}"
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor  "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly  "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor  "org.projectlombok:lombok:${lombokVersion}"
+
+        compileOnly "org.mapstruct:mapstruct:${mapstructVersion}", 'org.projectlombok:lombok'
+        annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", 'org.projectlombok:lombok'
+
+        implementation ('org.mockito:mockito-core:2.23.4')
+        implementation group: 'org.agileware', name: 'smartunit', version: '0.10.0'
+        implementation group: 'jline', name: 'jline', version: '2.13'
+
+        implementation 'io.springfox:springfox-swagger2:2.9.2'
+        implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+        implementation(group: 'co.com.bancolombia.vinculacion-transversal.libs', name: 'vinculacion-transversal-technical', version: '1.0.1')
+        implementation(group: 'co.com.bancolombia.vinculacion-transversal.libs', name: 'vinculacion-transversal-generic-commons', version: '1.0.36')
+        implementation(group: 'co.com.bancolombia.vinculacion-transversal.libs', name: 'vinculacion-transversal-logfunctional', version: '1.0.4')
+
+        implementation "io.projectreactor:reactor-core:${reactorVersion}"
+        implementation "io.projectreactor.addons:reactor-extra:${reactorAddonsVersion}"
+        implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+        implementation 'org.reactivecommons:async-commons-rabbit-starter:1.0.3'
+        testImplementation "io.projectreactor:reactor-test:${reactorVersion}"
+    }
+
+    jacoco {
+        toolVersion = '0.8.5'
+    }
+
+    jacocoTestReport {
+        sourceSets sourceSets.main
+        getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            mavenBom 'org.apache.logging.log4j:log4j-bom:2.16.0'
+        }
+    }
+}
